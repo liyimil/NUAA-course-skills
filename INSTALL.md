@@ -1,46 +1,84 @@
 # 安装说明
 
-## 1. 安装 Python 依赖
+## 环境要求
+
+- Python 3.10+
+- Windows / macOS / Linux
+- 南航统一认证账号
+
+## 安装步骤
+
+### 1. 克隆仓库
+
+```powershell
+git clone https://github.com/liyimil/NUAA-course-skills.git
+cd NUAA-course-skills
+```
+
+### 2. 创建课程表
+
+```powershell
+copy courses.example.json courses.json
+```
+
+### 3. 安装 Python 依赖
 
 ```powershell
 cd skills\nuaa-vod-summarizer
 python -m pip install -r requirements.txt
+```
+
+### 4. 安装浏览器
+
+```powershell
 python -m playwright install chromium
 ```
 
-如果你希望优先使用 Edge 或 Chrome，只要本机已安装对应浏览器即可。脚本默认尝试 `msedge`。
+如果你已安装 Chrome 或 Edge，可以跳过此步。脚本默认优先使用 Edge（`msedge`），Chromium 作为后备。
 
-## 2. 首次运行
+### 5. （可选）初始化 Obsidian vault
 
 ```powershell
-python scripts\extract_nuaa_vod.py "https://ft.nuaa.edu.cn/jy-application-vod-he-ui/#/video-detail?id=118467" --output-dir ".\work\118467" --browser-runtime-auth --manual-wait-seconds 180
+cd ..\..
+python manage.py vault-init
 ```
 
-`--browser-runtime-auth` 会打开一个可见浏览器窗口。首次使用时，请在窗口里完成南航登录；脚本会等待 `--manual-wait-seconds` 指定的时间后继续。
+这会创建 `vault/` 目录，用 Obsidian 打开该目录即可。
 
-## 3. 输出文件
+## 验证安装
 
-典型输出：
-
-```text
-work/
-  118467/
-    raw/
-      page.json
-      captured_responses.json
-      replay_inventory.json
-      storage_state.json
-      responses/
-      transcript.txt
-    semantic_rebuild/
-      semantic_rebuild_input.json
-      semantic_rebuild_prompt.md
+```powershell
+python manage.py list
 ```
 
-如果没有捕获到字幕响应，则不会生成正式 transcript。
+如果看到空表格（或已有课程），说明安装成功。
 
-## 4. 注意事项
+## 首次添加课程
 
-- 南航 VOD 接口需要登录态，裸请求会返回 `401`。
-- 第一版脚本先保留真实接口响应，字段解析会随着样本继续收敛。
-- 不要只凭课件或视频元信息生成正式课堂笔记；正式笔记必须以字幕/转写为主要来源。
+```powershell
+python manage.py add "https://ft.nuaa.edu.cn/jy-application-vod-he-ui/#/video-detail?id=<你的课程ID>"
+```
+
+浏览器会打开，在窗口中完成南航登录即可，后续无需手动操作。
+
+## 输出文件
+
+抽取完成后，每门课的数据在 `work/<teclId>/` 下：
+
+```
+work/118467/
+  course.json                        # 课程元信息
+  replay_inventory.json              # 课次清单
+  lessons/
+    1547370/                         # 课次 ID
+      metadata.json                  #   课次元信息
+      note.md                        #   生成的笔记（手动/AI 生成）
+      raw/                           #   原始 API 响应
+      semantic_rebuild/              #   结构化输入（供 AI 读取）
+```
+
+## 注意事项
+
+- 南航 VOD 接口需要登录态，Cookie 过期后重新运行会自动提示登录
+- 不要只凭课件或视频元信息生成课堂笔记，正式笔记应以字幕/转写为主要来源
+- `work/` 和 `vault/` 已在 `.gitignore` 中排除，不会被提交到 Git
