@@ -5,8 +5,9 @@
 - Python 3.10+
 - Windows / macOS / Linux
 - 南航统一认证账号
+- Chromium 内核浏览器（Edge、Chrome 或 Chromium）
 
-## 安装步骤
+## 安装方式一：git clone（推荐新手）
 
 ### 1. 克隆仓库
 
@@ -43,7 +44,31 @@ cd ..\..
 python manage.py vault-init
 ```
 
-这会创建 `vault/` 目录，用 Obsidian 打开该目录即可。
+## 安装方式二：npx skills add（Claude Code 用户）
+
+```bash
+# 全局安装，所有项目可用
+npx skills add https://github.com/liyimil/NUAA-course-skills --skill nuaa-vod-summarizer --yes --global
+npx skills add https://github.com/liyimil/NUAA-course-skills --skill obsidian-course-vault --yes --global
+```
+
+如果只想安装到当前项目，去掉 `--global`：
+
+```bash
+npx skills add https://github.com/liyimil/NUAA-course-skills --skill nuaa-vod-summarizer --yes
+npx skills add https://github.com/liyimil/NUAA-course-skills --skill obsidian-course-vault --yes
+```
+
+安装完成后，需要到安装后的 skill 目录补充依赖：
+
+```powershell
+# Windows Codex 用户，全局安装后通常在：
+cd %USERPROFILE%\.codex\skills\nuaa-vod-summarizer
+python -m pip install -r requirements.txt
+python -m playwright install chromium
+```
+
+注意：`npx skills add` 安装的是 skill 副本，不是直接在仓库目录里运行。安装完成后请阅读各自目录下的 `SKILL.md`。
 
 ## 验证安装
 
@@ -74,7 +99,11 @@ work/118467/
       metadata.json                  #   课次元信息
       note.md                        #   生成的笔记（手动/AI 生成）
       raw/                           #   原始 API 响应
+        subtitle.json
+        transcript.txt
       semantic_rebuild/              #   结构化输入（供 AI 读取）
+        semantic_rebuild_input.json
+        semantic_rebuild_prompt.md
 ```
 
 ## 注意事项
@@ -82,3 +111,4 @@ work/118467/
 - 南航 VOD 接口需要登录态，Cookie 过期后重新运行会自动提示登录
 - 不要只凭课件或视频元信息生成课堂笔记，正式笔记应以字幕/转写为主要来源
 - `work/` 和 `vault/` 已在 `.gitignore` 中排除，不会被提交到 Git
+- 首次使用建议先拿一节课跑通全流程，确认登录态、输出目录、字幕状态都正常后再批量操作
