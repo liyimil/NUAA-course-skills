@@ -1,0 +1,11 @@
+{
+  "courses": {
+    "示例课程": {
+      "url": "https://ft.nuaa.edu.cn/jy-application-vod-he-ui/#/video-detail?id=XXXXX",
+      "teclId": "XXXXX",
+      "vod_output_dir": "work\\XXXXX",
+      "course_name": "示例课程"
+    }
+  },
+  "vault_dir": "vault"
+}

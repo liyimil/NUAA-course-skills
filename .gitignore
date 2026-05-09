@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+
+# Browser profiles (cookies, login state, history)
+.browser-profile/
+
+# Playwright auth state
+storage_state.json
+
+# Course work data (personal learning materials)
+work/
+
+# Obsidian vault
+vault/
+
+# Course registry (personal)
+courses.json
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
