@@ -1,5 +1,10 @@
 # NUAA Course Skills
 
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org/)
+[![Status](https://img.shields.io/badge/status-public%20beta-yellow)](https://github.com/liyimil/NUAA-course-skills)
+[![GitHub last commit](https://img.shields.io/github/last-commit/liyimil/NUAA-course-skills)](https://github.com/liyimil/NUAA-course-skills)
+
 把南航飞天云课堂的课程点播、AI 字幕、课件和课次元信息，整理成**可检索、可回看、可复用**的课程学习资料。
 
 它既可以生成单次课程笔记，也可以沉淀到 Obsidian，形成长期维护的课程知识库。
