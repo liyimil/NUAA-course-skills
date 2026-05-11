@@ -60,6 +60,15 @@ def parse_video_detail_url(url: str) -> dict[str, Any]:
     }
 
 
+def normalize_url(url: str) -> str:
+    """Convert play-center URL to video-detail URL so the same extraction works."""
+    if "play-center" in url and "teclId=" in url:
+        tecl_id = (parse_qs(urlparse(url).fragment.partition("?")[2]).get("teclId") or [None])[-1]
+        if tecl_id:
+            return f"https://ft.nuaa.edu.cn/jy-application-vod-he-ui/#/video-detail?id={tecl_id}"
+    return url
+
+
 def is_interesting_url(url: str) -> bool:
     return any(marker.rstrip("/") in url for marker in KNOWN_API_MARKERS) and any(
         path in url for path in INTERESTING_PATHS
@@ -447,8 +456,7 @@ async def run(args: argparse.Namespace) -> int:
     page_info = parse_video_detail_url(args.url)
     await write_json(raw_dir / "page.json", page_info)
 
-    global _api_base
-    _api_base = page_info["api_base"]
+    args.url = normalize_url(args.url)
 
     captured: list[dict[str, Any]] = []
 
